@@ -12,8 +12,8 @@
 - Склонировать репозиторий и перейти в директорию<br>
 <code>git clone https://github.com/Re-Dnor/Contacts.git</code>
 - Далее установить зависимости проекта и json-server, используемый в качестве fake-rest-api<br>
-<code>npm i</code>
-<code>npm install -g json-server</code>
+<code>npm i</code><br>
+<code>npm install -g json-server</code><br>
 <code>json-server --watch -p4000 db.json</code>
 - Запуск приложения<br>
 <code>npm start</code>
