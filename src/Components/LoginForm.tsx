@@ -32,7 +32,7 @@ function LoginForm() {
     onSubmit: async (values) => {
       setFormControlFeedbach(false);
       try {
-        const res = await axios.get('https://my-json-server.typicode.com/Re-Dnor/Contacts/users');
+        const res = await axios.get('http://localhost:2000/users');
         const data = {
           allUsers: res.data,
           inputData: values,

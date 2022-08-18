@@ -4,6 +4,8 @@ import {
   Col, ListGroup, CloseButton, FormGroup, FormControl, Button, Form, InputGroup,
 } from 'react-bootstrap';
 import _ from 'lodash';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import type { RootState } from '../store/store';
 import { addContact, removeContact } from '../store/auth-slice';
 
@@ -11,13 +13,16 @@ function Search() {
   const dispatch = useDispatch();
   const [contact, setContact] = useState('');
   const [search, setSearch] = useState('');
-  const { contacts } = useSelector((state: RootState) => state.auth);
+  const {
+    contacts, currentUserId, username, password,
+  } = useSelector((state: RootState) => state.auth);
   const filteredContact = contacts.filter((item) => {
     if (item.contact.toLowerCase().includes(search.toLocaleLowerCase())) {
       return true;
     }
     return false;
   });
+
   const inputForm = useRef<HTMLFormElement>(null);
   const input = useRef<HTMLInputElement>(null);
 
@@ -43,10 +48,38 @@ function Search() {
       contact,
     };
 
-    dispatch(addContact(newContact));
-    if (inputForm.current) {
-      inputForm.current.reset();
-    }
+    axios.patch(`http://localhost:2000/users/${currentUserId}`, {
+      id: currentUserId,
+      username,
+      password,
+      contacts: [...contacts, newContact],
+    })
+      .then(() => {
+        dispatch(addContact(newContact));
+        if (inputForm.current) {
+          inputForm.current.reset();
+          setContact('');
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
+  const handleRemove = (id: string) => {
+    const newContacts = contacts.filter((item) => item.contactID !== id);
+    axios.patch(`http://localhost:2000/users/${currentUserId}`, {
+      id: currentUserId,
+      username,
+      password,
+      contacts: newContacts,
+    })
+      .then(() => {
+        dispatch(removeContact(id));
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   return (
@@ -76,7 +109,7 @@ function Search() {
               <div className="ms-2 me-auto">
                 {item.contact}
               </div>
-              <CloseButton onClick={() => dispatch(removeContact(item.contactID))} />
+              <CloseButton onClick={() => handleRemove(item.contactID)} />
             </ListGroup.Item>
           ))}
         </ListGroup>

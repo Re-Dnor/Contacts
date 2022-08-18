@@ -1,10 +1,25 @@
 {
   "users": [
-    { "id": 1, "username": "admin", "password": "admin", "contacts": []},
-    { "id": 2, "username": "user", "password": "user", "contacts": [
-      {"contactID": 1, "contact": "Alex"},
-      {"contactID": 2, "contact": "Nacho"},
-      {"contactID": 3, "contact": "Michel"}
-      ] }
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin",
+      "contacts": []
+    },
+    {
+      "id": 2,
+      "username": "user",
+      "password": "user",
+      "contacts": [
+        {
+          "contactID": "ContactID-1",
+          "contact": "Alex"
+        },
+        {
+          "contactID": "ContactID-16",
+          "contact": "Mishel"
+        }
+      ]
+    }
   ]
 }

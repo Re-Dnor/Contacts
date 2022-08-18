@@ -8,7 +8,9 @@ interface IContacts {
 
 export interface AuthState {
   authStatus: boolean,
-  currentUserId: number | null,
+  currentUserId: string | null,
+  username: string | null,
+  password: string | null,
   contacts: IContacts[],
 }
 
@@ -37,7 +39,9 @@ interface IActionAddContact {
 
 const initialState: AuthState = {
   authStatus: !!localStorage.getItem('status'),
-  currentUserId: null,
+  currentUserId: localStorage.getItem('currentUserId'),
+  username: localStorage.getItem('username'),
+  password: localStorage.getItem('password'),
   contacts: JSON.parse(localStorage.getItem('contacts') || '{}'),
 };
 
@@ -51,11 +55,15 @@ export const authSlice = createSlice({
       allUsers.forEach((user) => {
         if (user.username === username && user.password === password) {
           state.contacts = user.contacts;
-          state.currentUserId = user.id;
+          state.currentUserId = String(user.id);
           state.authStatus = true;
+          state.username = username;
+          state.password = password;
 
           localStorage.setItem('status', 'true');
+          localStorage.setItem('currentUserId', String(user.id));
           localStorage.setItem('username', username);
+          localStorage.setItem('password', password);
           localStorage.setItem('contacts', JSON.stringify(user.contacts));
         }
       });
@@ -63,7 +71,9 @@ export const authSlice = createSlice({
     toLogOut: (state) => {
       state.authStatus = false;
       localStorage.removeItem('status');
+      localStorage.removeItem('currentUserId');
       localStorage.removeItem('username');
+      localStorage.removeItem('password');
       localStorage.removeItem('contacts');
     },
     addContact: (state, action: IActionAddContact) => {
