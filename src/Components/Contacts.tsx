@@ -16,20 +16,14 @@ function Search() {
   const {
     contacts, currentUserId, username, password,
   } = useSelector((state: RootState) => state.auth);
-  const filteredContact = contacts.filter((item) => {
-    if (item.contact.toLowerCase().includes(search.toLocaleLowerCase())) {
-      return true;
-    }
-    return false;
-  });
+  const lowerSearch = search.toLocaleLowerCase();
+  const filteredContact = contacts.filter((cnt) => cnt.contact.toLowerCase().includes(lowerSearch));
 
   const inputForm = useRef<HTMLFormElement>(null);
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (input.current) {
-      input.current.focus();
-    }
+    input?.current?.focus();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

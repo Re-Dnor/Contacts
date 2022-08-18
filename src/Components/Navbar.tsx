@@ -14,7 +14,7 @@ function Navbar() {
     <BootstrapNavbar bg="white" expand="lg" className="shadow-sm">
       <div className="container">
         <BootstrapNavbar.Brand as={Link} to="/">Contacts</BootstrapNavbar.Brand>
-        {authStatus && <Button onClick={() => dispatch(toLogOut())}>Выход</Button>}
+        {authStatus && <Button onClick={() => dispatch(toLogOut())}>Exit</Button>}
       </div>
       <ToastContainer autoClose={1500} />
     </BootstrapNavbar>
